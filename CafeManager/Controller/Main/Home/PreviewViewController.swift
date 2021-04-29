@@ -11,6 +11,7 @@ import PDFKit
 class PreviewViewController: UIViewController {
     
     @IBOutlet weak var containerView: UIView!
+    //DocumentPath
     var path: String?
 
     override func viewDidLoad() {
