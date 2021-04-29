@@ -50,6 +50,8 @@
 		4F544FED263ADEB50023D026 /* TableViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F544FEC263ADEB50023D026 /* TableViewUtils.swift */; };
 		4F544FEF263AE5BE0023D026 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F544FEE263AE5BE0023D026 /* PreviewViewController.swift */; };
 		4F544FF1263AEE4D0023D026 /* ViewUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F544FF0263AEE4D0023D026 /* ViewUtils.swift */; };
+		4F545037263B3E210023D026 /* UpdateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545036263B3E210023D026 /* UpdateProfileViewController.swift */; };
+		4F545039263B3E330023D026 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F545038263B3E330023D026 /* UpdatePasswordViewController.swift */; };
 		4F6E541E2638802E00613F73 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E541D2638802E00613F73 /* CustomTextField.swift */; };
 		4F6E54262638804F00613F73 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E54252638804F00613F73 /* RoundButton.swift */; };
 		4F6E542B2638807500613F73 /* RoundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6E542A2638807500613F73 /* RoundImage.swift */; };
@@ -133,6 +135,8 @@
 		4F544FEC263ADEB50023D026 /* TableViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewUtils.swift; sourceTree = "<group>"; };
 		4F544FEE263AE5BE0023D026 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		4F544FF0263AEE4D0023D026 /* ViewUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewUtils.swift; sourceTree = "<group>"; };
+		4F545036263B3E210023D026 /* UpdateProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileViewController.swift; sourceTree = "<group>"; };
+		4F545038263B3E330023D026 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
 		4F6E541D2638802E00613F73 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		4F6E54252638804F00613F73 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		4F6E542A2638807500613F73 /* RoundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundImage.swift; sourceTree = "<group>"; };
@@ -217,12 +221,9 @@
 		4F1C69B72639D6720023FB7F /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				4F545035263B3DDE0023D026 /* Order */,
+				4F545034263B3DC70023D026 /* Account */,
 				4F1C69B82639D6790023FB7F /* Store */,
-				4F1C69BF2639D6ED0023FB7F /* AccountViewController.swift */,
-				4F1C69C12639D70B0023FB7F /* OrderViewController.swift */,
-				4F1C69C32639D7220023FB7F /* OrderDetailViewController.swift */,
-				4F1C69C52639DE720023FB7F /* StoreViewController.swift */,
-				4F544FEE263AE5BE0023D026 /* PreviewViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -230,6 +231,7 @@
 		4F1C69B82639D6790023FB7F /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				4F1C69C52639DE720023FB7F /* StoreViewController.swift */,
 				4F1C69B92639D68E0023FB7F /* FoodViewController.swift */,
 				4F1C69BB2639D6B30023FB7F /* CategoryViewController.swift */,
 				4F1C69BD2639D6C40023FB7F /* MenuViewController.swift */,
@@ -345,6 +347,26 @@
 				4F544FE0263A5F2A0023D026 /* food.json */,
 			);
 			path = AnimRes;
+			sourceTree = "<group>";
+		};
+		4F545034263B3DC70023D026 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				4F1C69BF2639D6ED0023FB7F /* AccountViewController.swift */,
+				4F544FEE263AE5BE0023D026 /* PreviewViewController.swift */,
+				4F545036263B3E210023D026 /* UpdateProfileViewController.swift */,
+				4F545038263B3E330023D026 /* UpdatePasswordViewController.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		4F545035263B3DDE0023D026 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				4F1C69C32639D7220023FB7F /* OrderDetailViewController.swift */,
+				4F1C69C12639D70B0023FB7F /* OrderViewController.swift */,
+			);
+			path = Order;
 			sourceTree = "<group>";
 		};
 		4F6E541B2638801200613F73 /* Util */ = {
@@ -735,11 +757,13 @@
 				4F544FE5263A6B6F0023D026 /* SampleViewController.swift in Sources */,
 				4F544FE7263A8CBE0023D026 /* ImageFetcher.swift in Sources */,
 				4F1C69BE2639D6C40023FB7F /* MenuViewController.swift in Sources */,
+				4F545037263B3E210023D026 /* UpdateProfileViewController.swift in Sources */,
 				4F3094452638FFFF00DC6293 /* ProgressHUD.swift in Sources */,
 				4F30943B2638FFB600DC6293 /* PopupAlerts.swift in Sources */,
 				4F30944A2639004400DC6293 /* EntityModel.swift in Sources */,
 				4F544FED263ADEB50023D026 /* TableViewUtils.swift in Sources */,
 				4F3094272638FDC500DC6293 /* DateUtil.swift in Sources */,
+				4F545039263B3E330023D026 /* UpdatePasswordViewController.swift in Sources */,
 				4F6E542B2638807500613F73 /* RoundImage.swift in Sources */,
 				4F1C69C62639DE720023FB7F /* StoreViewController.swift in Sources */,
 				4FE182F8263871DC0020780A /* SceneDelegate.swift in Sources */,

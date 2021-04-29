@@ -217,6 +217,54 @@ class FirebaseOP {
         })
     }
     
+    func updateUser(user: User) {
+        guard let userName = user.userName, let email = user.email, let phoneNo = user.phoneNo else {
+            NSLog("Empty params found on user instance")
+            delegate?.onUserUpdateFailed(error: FieldErrorCaptions.updateUserFailed)
+            return
+        }
+        
+        let data = [
+            UserKeys.userName : userName,
+            UserKeys.phoneNo : phoneNo,
+        ]
+        
+        self.getDBReference()
+            .child("users")
+            .child(email.replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_"))
+            .updateChildValues(data) {
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    self.delegate?.onUserUpdateFailed(error: FieldErrorCaptions.updateUserFailed)
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onUserDataUpdated(user: user)
+                }
+            }
+    }
+    
+    func updateUserPassword(email: String, newPassword: String, existingPassword: String) {
+        let user = Auth.auth().currentUser
+        let credential = EmailAuthProvider.credential(withEmail: email, password: existingPassword)
+        
+        user?.reauthenticate(with: credential) { data, error  in
+          if let error = error {
+            NSLog(error.localizedDescription)
+            self.delegate?.onPasswordChangeFailedWithError(error: FieldErrorCaptions.invalidExistingPassword)
+          } else {
+            Auth.auth().currentUser?.updatePassword(to: newPassword, completion: {
+                error in
+                if let error = error {
+                    self.delegate?.onPasswordChangeFailedWithError(error: FieldErrorCaptions.updatePasswordFailed)
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onPasswordChanged()
+                }
+            })
+          }
+        }
+    }
+    
     // MARK: - Food Based actions
     
     func fetchAllFoodItems(addDefault: Bool = true) {
