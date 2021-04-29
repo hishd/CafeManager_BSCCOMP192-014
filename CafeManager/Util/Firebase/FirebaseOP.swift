@@ -217,6 +217,8 @@ class FirebaseOP {
         })
     }
     
+    // MARK: - Food Based actions
+    
     func fetchAllFoodItems(addDefault: Bool = true) {
         self.getDBReference().child("food_category").observeSingleEvent(of: .value, with: {
             snapshot in
@@ -384,6 +386,8 @@ class FirebaseOP {
             }
         }
     }
+    
+    // MARK: - Order based actions
     
     func getAllOrders() {
         self.getDBReference().child("orders")

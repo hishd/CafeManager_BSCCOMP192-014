@@ -277,17 +277,11 @@
 		4F3094172638FCB900DC6293 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
-				4F1C69C72639E8A30023FB7F /* CategoryCell.swift */,
 				4F1C69C82639E8A30023FB7F /* CategoryCell.xib */,
-				4F1C69CF2639E9D70023FB7F /* FoodItemCell.swift */,
 				4F1C69D02639E9D70023FB7F /* FoodItemCell.xib */,
-				4F1C69D32639EE4D0023FB7F /* OrderSummaryCell.swift */,
 				4F1C69D42639EE4D0023FB7F /* OrderSummaryCell.xib */,
-				4F1C69D72639F5300023FB7F /* CategoryTableViewCell.swift */,
 				4F1C69D82639F5300023FB7F /* CategoryTableViewCell.xib */,
-				4F1C69DB2639F6DC0023FB7F /* OrderItemTableViewCell.swift */,
 				4F1C69DC2639F6DC0023FB7F /* OrderItemTableViewCell.xib */,
-				4F544FE8263AC1F00023D026 /* OrderItemInfoTableViewCell.swift */,
 				4F544FE9263AC1F00023D026 /* OrderItemInfoTableViewCell.xib */,
 			);
 			path = Xib;
@@ -305,6 +299,12 @@
 		4F3094192638FCCD00DC6293 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
+				4F1C69C72639E8A30023FB7F /* CategoryCell.swift */,
+				4F1C69CF2639E9D70023FB7F /* FoodItemCell.swift */,
+				4F1C69D32639EE4D0023FB7F /* OrderSummaryCell.swift */,
+				4F1C69D72639F5300023FB7F /* CategoryTableViewCell.swift */,
+				4F1C69DB2639F6DC0023FB7F /* OrderItemTableViewCell.swift */,
+				4F544FE8263AC1F00023D026 /* OrderItemInfoTableViewCell.swift */,
 			);
 			path = Xib;
 			sourceTree = "<group>";

@@ -22,7 +22,9 @@ class PreviewViewController: UIViewController {
         guard let path = self.path else {
             return
         }
+        
         let url = URL(fileURLWithPath:path)
+        //Adding PDFView to SuperView
         let pdfView = PDFView(frame: containerView.bounds)
         pdfView.autoScales = true
         pdfView.displayMode = .singlePage

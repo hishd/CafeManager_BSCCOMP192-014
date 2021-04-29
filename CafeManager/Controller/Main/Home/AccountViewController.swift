@@ -82,7 +82,10 @@ class AccountViewController: BaseViewController {
 //        self.documentPath = self.tblPastOrders.exportAsPdfFromTable()
 //        self.performSegue(withIdentifier: StoryBoardSegues.AccountToPreview, sender: nil)
 //    }
-    
+
+}
+
+extension AccountViewController {
     func registerNIB() {
         tblPastOrders.register(UINib(nibName: OrderSummaryCell.nibName, bundle: nil), forCellReuseIdentifier: OrderSummaryCell.reuseIdentifier)
         self.tblPastOrders.estimatedRowHeight = 250
@@ -154,7 +157,6 @@ class AccountViewController: BaseViewController {
         self.view.endEditing(true)
         refreshData()
     }
-
 }
 
 extension AccountViewController : UITableViewDelegate, UITableViewDataSource {

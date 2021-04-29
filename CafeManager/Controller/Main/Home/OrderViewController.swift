@@ -74,18 +74,20 @@ class OrderViewController: BaseViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == StoryBoardSegues.ordersToOrderInfo {
+            (segue.destination as! OrderDetailViewController).order = filteredOrders[selectedIndex]
+        }
+    }
+}
+
+extension OrderViewController {
     func registerNIB() {
         tblOrders.register(UINib(nibName: OrderItemTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: OrderItemTableViewCell.reuseIdentifier)
     }
     
     @objc func refreshOrderData() {
         firebaseOP.getAllOrders()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == StoryBoardSegues.ordersToOrderInfo {
-            (segue.destination as! OrderDetailViewController).order = filteredOrders[selectedIndex]
-        }
     }
 }
 
