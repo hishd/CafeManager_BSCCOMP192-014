@@ -41,6 +41,10 @@ class OrderDetailViewController: BaseViewController {
         if self.order?.orderStatus == .ORDER_READY {
             btnReadyOrDone.setTitle("Complete Order", for: .normal)
         }
+        
+        firebaseOP.getUserLocationUpdates(order: self.order!)
+        lblArrival.text = ""
+        lblOrderStatus.text = self.order!.orderStatus.rawValue
     }
 
     @IBAction func onBackPressed(_ sender: UIButton) {
@@ -84,6 +88,16 @@ extension OrderDetailViewController: FirebaseActions {
     func onOrderStatusNotChanged() {
         dismissProgress()
         displayErrorMessage(message: "Failed to change order status!", completion: nil)
+    }
+    func onCustomerLocationUpdated(status: Int) {
+        if status == 3 {
+            lblOrderStatus.text = "Arrived"
+            lblArrival.text = "On the way!"
+            displayInfoMessage(message: "The customer is on the way", completion: nil)
+        } else {
+            lblOrderStatus.text = "Ready"
+            lblArrival.text = ""
+        }
     }
 }
 

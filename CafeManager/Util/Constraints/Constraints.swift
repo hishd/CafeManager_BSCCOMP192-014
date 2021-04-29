@@ -4,6 +4,7 @@
 //
 //  Created by Hishara Dilshan on 2021-04-27.
 //
+import CoreLocation
 
 struct StoryBoardSegues {
     static let signInToHome = "signInToHome"
@@ -93,4 +94,10 @@ class OrderKeys {
     class var orderItems: String { return "orderItems" }
     class var customerName: String { return "customerName" }
     class var customerEmailEscapedString: String { return "customerEmail" }
+}
+
+class CafeterriaLocation {
+    class var location: CLLocation {
+        return CLLocation(latitude: 6.90636, longitude: 79.87066)
+    }
 }

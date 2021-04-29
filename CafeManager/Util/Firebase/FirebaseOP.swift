@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 import FirebaseStorage
+import CoreLocation
 
 class FirebaseOP {
     //Class instance
@@ -468,7 +469,27 @@ class FirebaseOP {
             }
     }
     
-    
+    func getUserLocationUpdates(order: Order) {
+        self.getDBReference().child("orders")
+            .child(order.orderID)
+            .observe(.childChanged, with: {
+                snapshot in
+                if snapshot.hasChildren() {
+                    guard let data = snapshot.value as? [String:Double] else {
+                        return
+                    }
+                    print(data)
+                    let coordinate = CLLocation(latitude: data["lat"] ?? 0, longitude: data["lon"] ?? 0)
+                    print("Distance : \(coordinate.distance(from: CafeterriaLocation.location))")
+                    //Distance in meters
+                    if coordinate.distance(from: CafeterriaLocation.location) <= 100 {
+                        self.delegate?.onCustomerLocationUpdated(status: 3)
+                    } else {
+                        self.delegate?.onCustomerLocationUpdated(status: 2)
+                    }
+                }
+            })
+    }
     
 }
 // MARK: - List of Protocol handlers
@@ -517,6 +538,8 @@ protocol FirebaseActions {
     
     func onOrderStatusChanged(status: Int)
     func onOrderStatusNotChanged()
+    
+    func onCustomerLocationUpdated(status: Int)
 }
 
 // MARK: - Protocol Extensions
@@ -562,4 +585,6 @@ extension FirebaseActions {
     
     func onOrderStatusChanged(status: Int){}
     func onOrderStatusNotChanged(){}
+    
+    func onCustomerLocationUpdated(status: Int){}
 }
