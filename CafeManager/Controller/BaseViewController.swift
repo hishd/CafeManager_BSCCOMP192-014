@@ -15,6 +15,7 @@ class BaseViewController : UIViewController {
     var progressHUD: ProgressHUD!
     var alertController: UIAlertController!
     var firebaseOP = FirebaseOP.instance
+    let refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,16 +82,20 @@ class BaseViewController : UIViewController {
         }
     }
     
+    func displayProgressBanner() {
+        GrowingNotificationBanner(title: "NIBM Cafe", subtitle: "Please wait", style: .info).show()
+    }
+    
     fileprivate func displayBanner(type: BANNER_TYPE, body: String) {
         switch type {
             case .SUCCESS:
-                GrowingNotificationBanner(title: "Screen Exercise", subtitle: body, style: .success).show()
+                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .success).show()
             case .WARNING:
-                GrowingNotificationBanner(title: "Screen Exercise", subtitle: body, style: .warning).show()
+                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .warning).show()
             case .INFO:
-                GrowingNotificationBanner(title: "Screen Exercise", subtitle: body, style: .info).show()
+                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .info).show()
             case .ERROR:
-                GrowingNotificationBanner(title: "Screen Exercise", subtitle: body, style: .danger).show()
+                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .danger).show()
         }
     }
     

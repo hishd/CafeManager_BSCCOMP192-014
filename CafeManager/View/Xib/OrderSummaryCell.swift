@@ -36,7 +36,7 @@ class OrderSummaryCell: UITableViewCell {
     }
     
     @IBAction func onPrintPressed(_ sender: UIButton) {
-        self.delegate?.onSummaryCellPrintPressed(index: self.rowIndex)
+        self.delegate?.onSummaryCellPrintPressed(path: self.contentView.exportAsPdfFromView())
     }
     
     func configureCell(order: Order, index: Int) {
@@ -62,5 +62,5 @@ class OrderSummaryCell: UITableViewCell {
 }
 
 protocol OrderSummaryCellActions {
-    func onSummaryCellPrintPressed(index: Int)
+    func onSummaryCellPrintPressed(path: String)
 }

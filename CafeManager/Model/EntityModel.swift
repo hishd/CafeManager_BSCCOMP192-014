@@ -37,12 +37,13 @@ struct User: Codable {
 }
 
 struct FoodCategory {
-    var _id: String
+    var categoryID: String
     var categoryName: String
     var isSelected: Bool
 }
 
 struct FoodItem {
+    var foodItemID: String = ""
     var foodName: String
     var foodDescription: String
     var foodPrice: Double
@@ -92,11 +93,11 @@ struct OrderItem {
 
 enum OrderStatus: String {
     case ORDER_PENDING = "Pending"//0
-    case ORDER_PREPERATION = "Preparing"//1
+    case ORDER_PREPERATION = "Prep."//1
     case ORDER_READY = "Ready"//2
-    case ORDER_ARRIVING = "Arriving"//3
-    case ORDER_COMPLETED = "Completed"//4
-    case ORDER_CANCELLED = "Cancelled"//5
+    case ORDER_ARRIVING = "Arrived"//3
+    case ORDER_COMPLETED = "Done"//4
+    case ORDER_CANCELLED = "Cancel"//5
 }
 
 struct OrderStatusInt {

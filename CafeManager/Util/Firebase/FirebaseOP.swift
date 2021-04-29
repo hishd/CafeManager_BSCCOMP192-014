@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import FirebaseStorage
 
 class FirebaseOP {
     //Class instance
@@ -36,6 +37,10 @@ class FirebaseOP {
             return dbRef
         }
         return dbRef
+    }
+    
+    fileprivate func getStorageReference() -> StorageReference {
+        return Storage.storage().reference()
     }
     
     // MARK: - User Based Operations
@@ -211,6 +216,260 @@ class FirebaseOP {
         })
     }
     
+    func fetchAllFoodItems(addDefault: Bool = true) {
+        self.getDBReference().child("food_category").observeSingleEvent(of: .value, with: {
+            snapshot in
+            if snapshot.hasChildren() {
+                
+                var categoryList: [FoodCategory] = []
+                var foodItemsList: [FoodItem] = []
+                
+                if addDefault {
+                    categoryList.append(FoodCategory(categoryID: "All", categoryName: "All", isSelected: true))
+                }
+                
+                if let data = snapshot.value as? [String: Any] {
+                    for category in data {
+                        guard let singleCategory = category.value as? [String: Any] else {
+                            NSLog("Could not serialize inner data : singleCategory")
+                            continue
+                        }
+                        categoryList.append(FoodCategory(categoryID: category.key, categoryName: singleCategory[FoodKeys.categoryName] as! String, isSelected: false))
+                        if let foodItems = singleCategory[FoodKeys.food_items] as? [String : Any] {
+                            for foodItem in foodItems {
+                                guard let singleFoodItem = foodItem.value as? [String: Any] else {
+                                    NSLog("Could not serialize inner data : foodItems in loop")
+                                    continue
+                                }
+                                
+                                foodItemsList.append(FoodItem(
+                                                        foodItemID: foodItem.key,
+                                                        foodName: singleFoodItem[FoodKeys.foodName] as! String,
+                                                        foodDescription: singleFoodItem[FoodKeys.foodDescription] as! String,
+                                                        foodPrice: singleFoodItem[FoodKeys.foodPrice] as! Double,
+                                                        discount: singleFoodItem[FoodKeys.discount] as! Int,
+                                                        foodImgRes: singleFoodItem[FoodKeys.foodImgRes] as! String,
+                                                        foodCategory: category.key,
+                                                        isActive: singleFoodItem[FoodKeys.isActive] as? Bool ?? true))
+                            }
+                        } else {
+                            NSLog("Could not serialize inner data : foodItems")
+//                            self.delegate?.onFoodItemsLoadFailed(error: FieldErrorCaptions.foodDataLoadFailed)
+                        }
+                    }
+                    self.delegate?.onCategoriesLoaded(categories: categoryList)
+                    self.delegate?.onFoodItemsLoaded(foodItems: foodItemsList.sorted { $0.foodName < $1.foodName })
+                } else {
+                    NSLog("Could not serialize data")
+                    self.delegate?.onFoodItemsLoadFailed(error: FieldErrorCaptions.foodDataLoadFailed)
+                }
+            } else {
+                NSLog("No food data found")
+                self.delegate?.onFoodItemsLoadFailed(error: FieldErrorCaptions.noFoodItems)
+            }
+        })
+    }
+    
+    func changeFoodStatus(status: Bool, foodItem: FoodItem, index: Int) {
+        if !checkConnection() {
+            return
+        }
+        self.getDBReference()
+            .child("food_category")
+            .child(foodItem.foodCategory)
+            .child("food_items")
+            .child(foodItem.foodItemID)
+            .child("isActive")
+            .setValue(status) {
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    self.delegate?.onFoodItemStatusNotChanged(index: index)
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onFoodItemStatusChanged(index: index, status: status)
+                }
+            }
+    }
+    
+    func addFoodCategory(categoryName: String) {
+        if !checkConnection() {
+            return
+        }
+        self.getDBReference()
+            .child("food_category")
+            .childByAutoId()
+            .child(FoodKeys.categoryName)
+            .setValue(categoryName) {
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    self.delegate?.onFoodCategoryNotAdded()
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onFoodCategoryAdded()
+                }
+            }
+        
+    }
+    
+    func removeFoodCategory(categoryID: String) {
+        self.getDBReference()
+            .child("food_category")
+            .child(categoryID)
+            .removeValue() {
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    self.delegate?.onFoodCategoryNotRemoved()
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onFoodCategoryRemoved()
+                }
+            }
+    }
+    
+    func addFoodItem(foodItem: FoodItem, image: UIImage) {
+        if !checkConnection() {
+            return
+        }
+        if let uploadData = image.jpegData(compressionQuality: 0.5) {
+            
+            let metaData = StorageMetadata()
+            metaData.contentType = "image/jpeg"
+            
+            getStorageReference().child("foodItemImages").child(foodItem.foodName).putData(uploadData, metadata: metaData) {
+                meta, error in
+                
+                if let error = error {
+                    NSLog("Unable to complete upload, Error : " + error.localizedDescription)
+                    self.delegate?.onFoodItemNotAdded()
+                    return
+                }
+                
+                self.getStorageReference().child("foodItemImages").child(foodItem.foodName).downloadURL(completion: {
+                    (url,error) in
+                    guard let downloadURL = url else {
+                        if let error = error {
+                            NSLog("Unable to get download URL, Error : " + error.localizedDescription)
+                        }
+                        self.delegate?.onFoodItemNotAdded()
+                        return
+                    }
+                    
+                    let data = [
+                        FoodKeys.foodName : foodItem.foodName,
+                        FoodKeys.foodDescription : foodItem.foodDescription,
+                        FoodKeys.foodPrice : foodItem.foodPrice,
+                        FoodKeys.discount : foodItem.discount,
+                        FoodKeys.foodImgRes : downloadURL.absoluteString,
+                        FoodKeys.categoryName : foodItem.foodCategory,
+                        FoodKeys.isActive : true
+                    ] as [String : Any]
+                    
+                    
+                    self.getDBReference()
+                        .child("food_category")
+                        .child(foodItem.foodCategory)
+                        .child("food_items")
+                        .childByAutoId()
+                        .setValue(data) {
+                            (error:Error?, ref:DatabaseReference) in
+                            if let error = error {
+                                self.delegate?.onFoodItemNotAdded()
+                                NSLog(error.localizedDescription)
+                            } else {
+                                self.delegate?.onFoodItemAdded()
+                            }
+                        }
+                })
+            }
+        }
+    }
+    
+    func getAllOrders() {
+        self.getDBReference().child("orders")
+            .observeSingleEvent(of: .value, with: {
+                snapshot in
+                if snapshot.hasChildren() {
+                    var orderedList: [Order] = []
+                    if let data = snapshot.value as? [String: Any] {
+                        for singleOrder in data {
+                            guard let orderData = singleOrder.value as? [String: Any] else {
+                                NSLog("Could not serialize inner data : singleOrder")
+                                continue
+                            }
+                            var order = Order()
+                            order.orderID = singleOrder.key
+                            order.itemCount = orderData[OrderKeys.itemCount] as! Int
+                            order.orderDate = Date().getDateFromMills(dateInMills: orderData[OrderKeys.orderDate] as! Int64)
+                            order.orderStatusCode = orderData[OrderKeys.orderStatusCode] as! Int
+                            order.orderStatusString = orderData[OrderKeys.orderStatusString] as! String
+                            order.orderTotal = orderData[OrderKeys.orderTotal] as! Double
+                            order.customername = orderData[OrderKeys.customerName] as! String
+                            if let foodItems = orderData[OrderKeys.orderItems] as? NSArray {
+                                var orderItems: [OrderItem] = []
+                                for i in 0..<foodItems.count {
+                                    guard let foodItem = foodItems[i] as? [String : Any] else {
+                                        NSLog("Could not serialize inner data : foodItems in array")
+                                        continue
+                                    }
+                                    orderItems.append(OrderItem(foodItem: FoodItem(foodName: foodItem[FoodKeys.foodName] as! String,
+                                                                                    foodDescription: "",
+                                                                                    foodPrice: foodItem[FoodKeys.foodPrice] as! Double,
+                                                                                    discount: 0,
+                                                                                    foodImgRes: "",
+                                                                                    isActive: true),
+                                                                 qty: foodItem[OrderKeys.itemCount] as! Int))
+                                }
+                                
+                                
+//                                for foodItem in foodItems {
+//                                    guard let singleFoodItem = foodItem.value as? [String: Any] else {
+//                                        NSLog("Could not serialize inner data : foodItems in loop")
+//                                        continue
+//                                    }
+//                                    orderItems.append(OrderItem(foodItem: FoodItem(foodName: singleFoodItem[FoodKeys.foodName] as! String,
+//                                                                                    foodDescription: "",
+//                                                                                    foodPrice: singleFoodItem[FoodKeys.foodPrice] as! Double,
+//                                                                                    discount: 0,
+//                                                                                    foodImgRes: ""),
+//                                                                 qty: singleFoodItem[OrderKeys.itemCount] as! Int))
+                                    order.orderItems = orderItems
+                                } else {
+                                NSLog("Could not serialize order item")
+                            }
+                            orderedList.append(order)
+                        }
+                        orderedList = orderedList.sorted{ $0.orderDate > $1.orderDate }
+                        self.delegate?.onAllOrdersLoaded(orderedList: orderedList)
+                    } else {
+                        NSLog("Unable to parse Order data")
+                        self.delegate?.onAllOrdersLoadFailed(error: FieldErrorCaptions.orderLoadFailed)
+                    }
+                    
+                } else {
+                    NSLog("No orders found!")
+                    self.delegate?.onAllOrdersLoadFailed(error: FieldErrorCaptions.noOrdersFound)
+                }
+            })
+    }
+    
+    func changeOrderStatus(order: Order, status: Int) {
+        self.getDBReference()
+            .child("orders")
+            .child(order.orderID)
+            .child(OrderKeys.orderStatusCode)
+            .setValue(status) {
+                (error:Error?, ref:DatabaseReference) in
+                if let error = error {
+                    self.delegate?.onOrderStatusNotChanged()
+                    NSLog(error.localizedDescription)
+                } else {
+                    self.delegate?.onOrderStatusChanged(status: status)
+                }
+            }
+    }
+    
+    
+    
 }
 // MARK: - List of Protocol handlers
 
@@ -236,6 +495,28 @@ protocol FirebaseActions {
     
     func onResetPasswordEmailSent()
     func onResetPasswordEmailSentFailed(error: String)
+    
+    func onCategoriesLoaded(categories: [FoodCategory])
+    func onFoodItemsLoaded(foodItems: [FoodItem])
+    func onFoodItemsLoadFailed(error: String)
+    
+    func onFoodItemStatusChanged(index: Int, status: Bool)
+    func onFoodItemStatusNotChanged(index: Int)
+    
+    func onFoodCategoryAdded()
+    func onFoodCategoryNotAdded()
+    
+    func onFoodCategoryRemoved()
+    func onFoodCategoryNotRemoved()
+    
+    func onFoodItemAdded()
+    func onFoodItemNotAdded()
+    
+    func onAllOrdersLoaded(orderedList: [Order])
+    func onAllOrdersLoadFailed(error: String)
+    
+    func onOrderStatusChanged(status: Int)
+    func onOrderStatusNotChanged()
 }
 
 // MARK: - Protocol Extensions
@@ -259,4 +540,26 @@ extension FirebaseActions {
     
     func onResetPasswordEmailSent(){}
     func onResetPasswordEmailSentFailed(error: String){}
+    
+    func onCategoriesLoaded(categories: [FoodCategory]){}
+    func onFoodItemsLoaded(foodItems: [FoodItem]){}
+    func onFoodItemsLoadFailed(error: String){}
+    
+    func onFoodItemStatusChanged(index: Int, status: Bool){}
+    func onFoodItemStatusNotChanged(index: Int){}
+    
+    func onFoodCategoryAdded(){}
+    func onFoodCategoryNotAdded(){}
+    
+    func onFoodCategoryRemoved(){}
+    func onFoodCategoryNotRemoved(){}
+    
+    func onFoodItemAdded(){}
+    func onFoodItemNotAdded(){}
+    
+    func onAllOrdersLoaded(orderedList: [Order]){}
+    func onAllOrdersLoadFailed(error: String){}
+    
+    func onOrderStatusChanged(status: Int){}
+    func onOrderStatusNotChanged(){}
 }

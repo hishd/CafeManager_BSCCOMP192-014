@@ -8,6 +8,8 @@
 struct StoryBoardSegues {
     static let signInToHome = "signInToHome"
     static let signUpHome = "signUpHome"
+    static let ordersToOrderInfo = "ordersToOrderInfo"
+    static let AccountToPreview = "AccountToPreview"
 }
 
 //Name of the SessionVariables
@@ -37,6 +39,9 @@ struct FieldErrorCaptions {
     
     static let updatePasswordFailed = "Faild to update password!"
     static let invalidExistingPassword = "Invalid existing password!"
+    
+    static let noOrdersFound = "No orders found!"
+    static let orderLoadFailed = "Failed to load orders!"
 }
 
 struct InputErrorCaptions {
@@ -45,6 +50,11 @@ struct InputErrorCaptions {
     static let invalidName = "Invalid Name"
     static let invalidPhoneNo = "Invalid phone no."
     static let passwordNotMatched = "Passwords does not match"
+    static let invaliCategorydName = "Invalid category"
+    static let invalidFoodName = "Invalid food name"
+    static let invalidFoodPrice = "Invalid food price"
+    static let invalidFoodDescription = "Invalid food description"
+    static let invalidDiscount = "Invalid discount"
 }
 
 struct AppConfig {
@@ -61,23 +71,26 @@ class UserKeys {
     class var password : String { return "password" }
     class var type : String { return "type" }
 }
-//
-//class FoodKeys {
-//    class var categoryName: String { return "categoryName" }
-//    class var food_items: String { return "food_items" }
-//    class var discount: String { return "discount" }
-//    class var foodDescription: String { return "foodDescription" }
-//    class var foodImgRes: String { return "foodImgRes" }
-//    class var foodName: String { return "foodName" }
-//    class var foodPrice: String { return "foodPrice" }
-//}
-//
-//class OrderKeys {
-//    class var orderID: String { return "orderID" }
-//    class var orderStatusCode: String { return "orderStatusCode" }
-//    class var orderStatusString: String { return "orderStatusString" }
-//    class var orderDate: String { return "orderDate" }
-//    class var itemCount: String { return "itemCount" }
-//    class var orderTotal: String { return "orderTotal" }
-//    class var orderItems: String { return "orderItems" }
-//}
+
+class FoodKeys {
+    class var categoryName: String { return "categoryName" }
+    class var food_items: String { return "food_items" }
+    class var discount: String { return "discount" }
+    class var foodDescription: String { return "foodDescription" }
+    class var foodImgRes: String { return "foodImgRes" }
+    class var foodName: String { return "foodName" }
+    class var foodPrice: String { return "foodPrice" }
+    class var isActive: String { return "isActive" }
+}
+
+class OrderKeys {
+    class var orderID: String { return "orderID" }
+    class var orderStatusCode: String { return "orderStatusCode" }
+    class var orderStatusString: String { return "orderStatusString" }
+    class var orderDate: String { return "orderDate" }
+    class var itemCount: String { return "itemCount" }
+    class var orderTotal: String { return "orderTotal" }
+    class var orderItems: String { return "orderItems" }
+    class var customerName: String { return "customerName" }
+    class var customerEmailEscapedString: String { return "customerEmail" }
+}

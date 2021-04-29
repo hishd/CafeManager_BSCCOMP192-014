@@ -16,6 +16,7 @@ class FoodItemCell: UITableViewCell {
     @IBOutlet weak var lblFoodPrice: UILabel!
     @IBOutlet weak var viewOfferContainer: UIView!
     @IBOutlet weak var lblDiscount: UILabel!
+    @IBOutlet weak var switchIsActive: UISwitch!
     
     var rowIndex: Int = 0
     var delegate: FoodItemCellActions?
@@ -51,6 +52,8 @@ class FoodItemCell: UITableViewCell {
             viewOfferContainer.isHidden = false
             lblDiscount.text = "\(foodItem.discount)% OFF"
         }
+        
+        switchIsActive.isOn = foodItem.isActive
         
         imgFood.kf.setImage(with: URL(string: foodItem.foodImgRes))
         lblFoodName.text = foodItem.foodName
