@@ -64,6 +64,19 @@ class AccountViewController: BaseViewController {
         }
     }
     
+    @IBAction func onSignOutClicked(_ sender: UIButton) {
+        displayActionSheet(title: "Sign Out", message: "Sign out from the application?", positiveTitle: "Sign out", negativeTitle: "Cancel", positiveHandler: {
+            action in
+            DispatchQueue.main.async {
+                SessionManager.clearUserSession()
+                let story = UIStoryboard(name: "Auth", bundle:nil)
+                let vc = story.instantiateViewController(withIdentifier: "StartViewController")
+                UIApplication.shared.windows.first?.rootViewController = vc
+                UIApplication.shared.windows.first?.makeKeyAndVisible()
+            }
+        })
+    }
+    
 //    @IBAction func onPrintTablePressed(_ sender: UIButton) {
 ////        print(self.tblPastOrders.exportAsPdfFromTable())
 //        self.documentPath = self.tblPastOrders.exportAsPdfFromTable()
