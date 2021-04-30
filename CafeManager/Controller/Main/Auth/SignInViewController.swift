@@ -11,9 +11,15 @@ class SignInViewController: BaseViewController {
 
     @IBOutlet weak var txtEmail: CustomTextField!
     @IBOutlet weak var txtPassword: CustomTextField!
+    @IBOutlet weak var btnSignIn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.txtEmail.accessibilityIdentifier = "txtEmail"
+        self.txtPassword.accessibilityIdentifier = "txtPassword"
+        self.btnSignIn.accessibilityIdentifier = "btnSignIn"
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {

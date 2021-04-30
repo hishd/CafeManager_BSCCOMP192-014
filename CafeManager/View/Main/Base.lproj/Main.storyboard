@@ -602,7 +602,7 @@
             <objects>
                 <viewController id="VrB-jJ-doG" customClass="CategoryViewController" customModule="CafeManager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FRM-M8-vwr">
-                        <rect key="frame" x="0.0" y="0.0" width="335" height="492"/>
+                        <rect key="frame" x="0.0" y="0.0" width="335" height="492.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EOE-6o-hwB">
@@ -717,6 +717,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zR3-Ve-rPc" customClass="AnimationView" customModule="Lottie">
                                 <rect key="frame" x="0.0" y="30" width="335" height="462.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <accessibility key="accessibilityConfiguration" identifier="tblFood">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="food"/>
                                 </userDefinedRuntimeAttributes>
@@ -754,7 +757,7 @@
             <objects>
                 <viewController id="3C4-Wj-kog" customClass="MenuViewController" customModule="CafeManager" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SvT-JJ-rXT">
-                        <rect key="frame" x="0.0" y="0.0" width="335" height="492.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="335" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new Item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="91D-bc-QCt">

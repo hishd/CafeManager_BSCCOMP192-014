@@ -14,7 +14,7 @@ class InputFieldValidator {
     static let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     static let nameRegEx = "[A-Za-z ]{2,100}"
     static let NICRegEx = "^([0-9]{9}[x|X|v|V]|[0-9]{12})$"
-    static let mobileRegex = "^(07)(0|1|2|5|6|7|8)[\\d]{7}$"
+    static let mobileRegex = "^(07)(0|1|2|4|5|6|7|8)[\\d]{7}$"
     static let accountNoRegex = "[0-9]{5,30}"
     static let priceRegex = "[0-9]{1,4}"
     static let discountRegex = "[0-9]{1,2}"

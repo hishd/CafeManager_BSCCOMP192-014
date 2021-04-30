@@ -24,6 +24,8 @@ class FoodViewController: BaseViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableViewFoodItems.accessibilityIdentifier = "tableViewFoodItems"
         // Do any additional setup after loading the view.
     }
     

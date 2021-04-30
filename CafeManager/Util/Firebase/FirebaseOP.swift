@@ -472,19 +472,6 @@ class FirebaseOP {
                                                                                     isActive: true),
                                                                  qty: foodItem[OrderKeys.itemCount] as! Int))
                                 }
-                                
-                                
-//                                for foodItem in foodItems {
-//                                    guard let singleFoodItem = foodItem.value as? [String: Any] else {
-//                                        NSLog("Could not serialize inner data : foodItems in loop")
-//                                        continue
-//                                    }
-//                                    orderItems.append(OrderItem(foodItem: FoodItem(foodName: singleFoodItem[FoodKeys.foodName] as! String,
-//                                                                                    foodDescription: "",
-//                                                                                    foodPrice: singleFoodItem[FoodKeys.foodPrice] as! Double,
-//                                                                                    discount: 0,
-//                                                                                    foodImgRes: ""),
-//                                                                 qty: singleFoodItem[OrderKeys.itemCount] as! Int))
                                     order.orderItems = orderItems
                                 } else {
                                 NSLog("Could not serialize order item")
