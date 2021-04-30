@@ -134,7 +134,7 @@ extension FoodViewController : UICollectionViewDataSource, UICollectionViewDeleg
 extension FoodViewController: FoodItemCellActions {
     func onFoodItemStatusChanged(status: Bool, index: Int) {
         displayProgress()
-        firebaseOP.changeFoodStatus(status: status, foodItem: foodItemList[index], index: index)
+        firebaseOP.changeFoodStatus(status: status, foodItem: filteredFood[index], index: index)
     }
 }
 
@@ -199,7 +199,9 @@ extension FoodViewController : FirebaseActions {
         displayErrorMessage(message: error, completion: nil)
     }
     func onFoodItemStatusChanged(index: Int, status: Bool) {
-        self.foodItemList[index].isActive = status
+        if let row = self.foodItemList.firstIndex(where: { $0.foodItemID == filteredFood[index].foodItemID }) {
+            self.foodItemList[row].isActive = status
+        }
         self.filteredFood[index].isActive = status
         dismissProgress()
         displaySuccessMessage(message: "Status Changed", completion: nil)

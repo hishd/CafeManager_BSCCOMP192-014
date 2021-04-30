@@ -197,8 +197,8 @@ extension AccountViewController : FirebaseActions {
         dismissProgress()
         self.filteredOrders.removeAll()
         self.fetchedOrderList.removeAll()
-        self.fetchedOrderList.append(contentsOf: orderedList)
-        self.filteredOrders.append(contentsOf: orderedList)
+        //Filtering and excluding the CANCELLED orders (To be commited)
+        self.fetchedOrderList.append(contentsOf: orderedList.filter{ $0.orderStatus != .ORDER_CANCELLED })
         startDate = fetchedOrderList.min { $0.orderDate < $1.orderDate }?.orderDate
         endDate = fetchedOrderList.min { $0.orderDate > $1.orderDate }?.orderDate
         txtFromDate.text = dateFormatter.string(from: startDate)

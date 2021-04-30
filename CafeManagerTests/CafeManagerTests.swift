@@ -119,27 +119,28 @@ class CafeManagerRegisterTests : XCTestCase, FirebaseActions {
     }
 }
 
-class CafeManagerLoginTests : XCTestCase, FirebaseActions {
+class CafeManagerLoginTests : XCTestCase, FirebaseActions, NetworkListener {
     private var result: XCTestExpectation!
     let firebaseOP = FirebaseOP.instance
     var userFound = false
     
+    var callForAPI = false
+    
     func testLogin() {
-        firebaseOP.delegate = self
+        NetworkMonitor.instance.delegate = self
         result = expectation(description: "Successful login!")
-        firebaseOP.signInUser(email: "hisharadilshan3@gmail.com", password: "idmcc3")
         waitForExpectations(timeout: 10)
         XCTAssertEqual(self.userFound, true)
     }
     
     func onUserSignInSuccess(user: User?) {
-        NSLog("Sign in Success")
+        print("Sign in Success")
         userFound = true
         result.fulfill()
     }
     
     func onUserSignInFailedWithError(error: String) {
-        NSLog("Sign in Failed")
+        print("Sign in Failed")
         print(error)
         userFound = false
         result.fulfill()
@@ -152,6 +153,14 @@ class CafeManagerLoginTests : XCTestCase, FirebaseActions {
     }
     
     func onConnectionLost() {
-        
+        print("=========CONNECTION LOST=========")
+    }
+    
+    func onNetworkChanged(connected: Bool, onMobileData: Bool) {
+        if connected && !callForAPI{
+            callForAPI = true
+            firebaseOP.delegate = self
+            firebaseOP.signInUser(email: "hisharadilshan3@gmail.com", password: "idmcc3")
+        }
     }
 }
