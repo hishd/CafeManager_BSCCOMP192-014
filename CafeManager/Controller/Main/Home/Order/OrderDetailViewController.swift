@@ -14,6 +14,7 @@ class OrderDetailViewController: BaseViewController {
     @IBOutlet weak var lblArrival: UILabel!
     @IBOutlet weak var tblOrderItems: UITableView!
     @IBOutlet weak var btnReadyOrDone: UIButton!
+    @IBOutlet weak var lblOrderID: UILabel!
     
     var order: Order?
     
@@ -45,6 +46,7 @@ class OrderDetailViewController: BaseViewController {
         firebaseOP.getUserLocationUpdates(order: self.order!)
         lblArrival.text = ""
         lblOrderStatus.text = self.order!.orderStatus.rawValue
+        lblOrderID.text = order?.orderID
     }
 
     @IBAction func onBackPressed(_ sender: UIButton) {
