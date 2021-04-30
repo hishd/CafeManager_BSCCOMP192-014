@@ -133,16 +133,20 @@ class CafeManagerLoginTests : XCTestCase, FirebaseActions {
     }
     
     func onUserSignInSuccess(user: User?) {
+        NSLog("Sign in Success")
         userFound = true
         result.fulfill()
     }
     
     func onUserSignInFailedWithError(error: String) {
+        NSLog("Sign in Failed")
+        print(error)
         userFound = false
         result.fulfill()
     }
     
     func onUserNotRegistered(error: String) {
+        print(error)
         userFound = false
         result.fulfill()
     }

@@ -44,7 +44,7 @@ class OrderDetailViewController: BaseViewController {
         }
         
         firebaseOP.getUserLocationUpdates(order: self.order!)
-        lblArrival.text = ""
+        lblArrival.text = "Ready to arrive"
         lblOrderStatus.text = self.order!.orderStatus.rawValue
         lblOrderID.text = order?.orderID
     }
