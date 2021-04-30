@@ -39,6 +39,7 @@ class FoodViewController: BaseViewController {
         refreshControl.addTarget(self, action: #selector(refreshFoodData), for: .valueChanged)
 //        displayProgress()
         displayAnimation()
+        selectedCategoryIndex = 0
         firebaseOP.fetchAllFoodItems()
     }
     
