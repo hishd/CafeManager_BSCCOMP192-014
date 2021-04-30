@@ -10,25 +10,27 @@ import UIKit
 import Loaf
 import NotificationBannerSwift
 import CoreLocation
+import ProgressHUD
 
 class BaseViewController : UIViewController {
     var networkMonitor = NetworkMonitor.instance
-    var progressHUD: ProgressHUD!
     var alertController: UIAlertController!
     var firebaseOP = FirebaseOP.instance
     let refreshControl = UIRefreshControl()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        progressHUD = ProgressHUD(view: view)
+        ProgressHUD.animationType = .multipleCircleScaleRipple
+        ProgressHUD.colorAnimation = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        ProgressHUD.colorStatus = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
     }
     
     func displayProgress() {
-        progressHUD.displayProgressHUD()
+        ProgressHUD.show("Please wait!")
     }
     
     func dismissProgress() {
-        progressHUD.dismissProgressHUD()
+        ProgressHUD.dismiss()
     }
     
     func displayErrorMessage(message: String, completion: (() -> Void)?) {
@@ -90,13 +92,25 @@ class BaseViewController : UIViewController {
     fileprivate func displayBanner(type: BANNER_TYPE, body: String) {
         switch type {
             case .SUCCESS:
-                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .success).show()
+                let successBanner = GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .success)
+                successBanner.duration = 1.5
+                successBanner.show()
+//                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .success).show()
             case .WARNING:
-                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .warning).show()
+                let warningBanner = GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .warning)
+                warningBanner.duration = 1.5
+                warningBanner.show()
+//                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .warning).show()
             case .INFO:
-                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .info).show()
+                let infoBanner = GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .info)
+                infoBanner.duration = 1.5
+                infoBanner.show()
+//                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .info).show()
             case .ERROR:
-                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .danger).show()
+                let errorBanner = GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .danger)
+                errorBanner.duration = 1.5
+                errorBanner.show()
+//                GrowingNotificationBanner(title: "NIBM Cafe", subtitle: body, style: .danger).show()
         }
     }
     

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ProgressHUD {
+class CustomProgressHUD {
     let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
     let view : UIView
     

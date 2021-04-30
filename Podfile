@@ -19,6 +19,7 @@ pod 'RealmSwift'
 pod 'IQKeyboardManagerSwift'
 pod 'NotificationBannerSwift', '~> 3.0.0'
 pod 'Firebase/Storage'
+pod 'ProgressHUD'
 
   target 'CafeManagerTests' do
     inherit! :search_paths
